@@ -31,7 +31,7 @@ export interface IAddAction {
   payload: string;
 }
 
-export interface IAddSucAction {
+export interface IAddSuccessAction {
   type: typeof ADD_TODO_SUCCESS;
   payload: Itodo;
 }
@@ -56,15 +56,29 @@ export interface IUpdateAction {
     update: Partial<Itodo>;
   };
 }
+export interface IDeleteAction {
+  type: typeof DELETE_TODO;
+  payload: {
+    id: string;
+  };
+}
+export interface IDeleteSuccessAction {
+  type: typeof DELETE_TODO_SUCESS;
+  payload: {
+    id: string;
+  };
+}
 
 // All ActionTypes
 export type TodoActionTypes =
   | IFetchAction
   | IFetchSucAction
   | IAddAction
-  | IAddSucAction
+  | IAddSuccessAction
   | IUpdateCheckAction
-  | IUpdateAction;
+  | IUpdateAction
+  | IDeleteAction
+  | IDeleteSuccessAction;
 
 // Message Action interface
 export interface ISetMessageAction {

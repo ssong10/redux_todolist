@@ -58,11 +58,12 @@ class Server {
         100
       );
     } else {
+      const deleted = this.todos.find(todo => todo.id === id);
       this.todos = this.todos.filter(todo => todo.id !== id);
       return delayAPI(
         {
           msg: `id-${id}, 삭제완료`,
-          todo: this.todos.find(todo => todo.id === id),
+          todo: deleted,
         },
         100
       );
