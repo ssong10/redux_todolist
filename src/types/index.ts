@@ -3,3 +3,7 @@ export interface Itodo {
   content: string;
   isCheck: boolean;
 }
+export interface TodoState {
+  count: number;
+  todoList: Itodo[];
+}

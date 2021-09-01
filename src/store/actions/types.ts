@@ -21,10 +21,9 @@ export interface IFetchSucAction {
 }
 export interface IAddAction {
   type: typeof ADD_TODO;
-  payload: {
-    content: string;
-  };
+  payload: string;
 }
+
 export interface IAddSucAction {
   type: typeof ADD_TODO_SUCCESS;
   payload: Itodo;
