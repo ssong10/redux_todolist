@@ -1,9 +1,9 @@
 import Server from './server';
 import { Itodo } from 'types';
-import { ReturnData } from './type';
+import { ReturnAPITodo, ReturnAPITodoList } from './type';
 const BASE_ENDPOINT = `http://dummy-server.io/todo`;
 
-type ReturnAPI = ReturnData | undefined;
+type ReturnAPI = ReturnAPITodo | ReturnAPITodoList | undefined;
 const fetchTodos = async (): Promise<ReturnAPI> => {
   const data = await Server.GET(BASE_ENDPOINT);
   return data;

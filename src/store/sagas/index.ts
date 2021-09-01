@@ -1,7 +1,8 @@
-import { all, put, takeLatest, call } from 'redux-saga/effects';
+import { all, put, takeLatest, call, delay } from 'redux-saga/effects';
 import TodoAPI from 'api';
-import { ReturnData } from 'api/type';
+import { ReturnAPITodo, ReturnAPITodoList } from 'api/type';
 import uuid from 'utils/uuid';
+import { setMessage } from 'store/actions/message';
 import {
   UPDATE_TODO_SUCCESS,
   ADD_TODO,
@@ -11,10 +12,12 @@ import {
   IAddAction,
   IUpdateCheckAction,
   UPDATE_CHECK_TODO,
+  SET_MESSAGE,
+  HIDE_MESSAGE,
 } from 'store/actions/types';
 
 export function* fetchTodo() {
-  const res: ReturnData = yield call(TodoAPI.fetchTodos);
+  const res: ReturnAPITodoList = yield call(TodoAPI.fetchTodos);
   yield put({
     type: FETCH_TODO_SUCCESS,
     payload: res,
@@ -26,7 +29,8 @@ export function* addTodo(action: IAddAction) {
     content: action.payload,
     isCheck: false,
   };
-  const res: ReturnData = yield call(() => TodoAPI.createdTodo(newTodo));
+  const res: ReturnAPITodo = yield call(() => TodoAPI.createdTodo(newTodo));
+  yield put(setMessage(`${res.todo?.content} 생성 완료`));
   yield put({
     type: ADD_TODO_SUCCESS,
     payload: res.todo,
@@ -35,8 +39,10 @@ export function* addTodo(action: IAddAction) {
 
 export function* checkUpdate(action: IUpdateCheckAction) {
   const { id, isCheck } = action.payload;
-  const res: ReturnData = yield call(() => TodoAPI.checkTodo(id, isCheck));
-  console.log(res);
+  const res: ReturnAPITodo = yield call(() => TodoAPI.checkTodo(id, isCheck));
+  yield put(
+    setMessage(`${res.todo?.content} 체크 ${isCheck ? '완료' : '해제'}`)
+  );
   yield put({
     type: UPDATE_TODO_SUCCESS,
     payload: {
@@ -51,8 +57,17 @@ export function* todos() {
   yield takeLatest(UPDATE_CHECK_TODO, checkUpdate);
 }
 
+export function* showMessage() {
+  yield delay(2000);
+  yield put({
+    type: HIDE_MESSAGE,
+  });
+}
+export function* message() {
+  yield takeLatest(SET_MESSAGE, showMessage);
+}
 function* rootSaga() {
-  yield all([todos()]);
+  yield all([todos(), message()]);
 }
 
 export default rootSaga;

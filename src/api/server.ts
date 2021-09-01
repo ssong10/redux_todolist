@@ -1,12 +1,12 @@
 import data from '../constant/data.json';
 import { Itodo } from 'types';
-import { ReturnData } from './type';
+import { ReturnAPITodo, ReturnAPITodoList } from './type';
 interface ChangeTodo {
   content?: string;
   isCheck?: boolean;
 }
-const delayAPI = (data: ReturnData, delay: number) =>
-  new Promise<ReturnData>(resolve => {
+const delayAPI = (data: ReturnAPITodo | ReturnAPITodoList, delay: number) =>
+  new Promise<typeof data>(resolve => {
     setTimeout(() => {
       return resolve(data);
     }, delay);
@@ -62,6 +62,7 @@ class Server {
       return delayAPI(
         {
           msg: `id-${id}, 삭제완료`,
+          todo: this.todos.find(todo => todo.id === id),
         },
         100
       );

@@ -7,3 +7,8 @@ export interface TodoState {
   count: number;
   todoList: Itodo[];
 }
+
+export interface Message {
+  text: string;
+  isShow: boolean;
+}

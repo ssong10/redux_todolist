@@ -11,7 +11,11 @@ export const UPDATE_CONTENT_TODO = 'update_content_todo';
 export const UPDATE_TODO_SUCCESS = 'update_todo_success';
 export const DELETE_TODO = 'delete_todo';
 export const DELETE_TODO_SUCESS = 'delete_todo_success';
+// message
+export const SET_MESSAGE = 'set_message';
+export const HIDE_MESSAGE = 'hide_message';
 
+// Todo Action interface
 export interface IFetchAction {
   type: typeof FETCH_TODO;
 }
@@ -52,6 +56,8 @@ export interface IUpdateAction {
     update: Partial<Itodo>;
   };
 }
+
+// All ActionTypes
 export type TodoActionTypes =
   | IFetchAction
   | IFetchSucAction
@@ -59,3 +65,15 @@ export type TodoActionTypes =
   | IAddSucAction
   | IUpdateCheckAction
   | IUpdateAction;
+
+// Message Action interface
+export interface ISetMessageAction {
+  type: typeof SET_MESSAGE;
+  payload: {
+    text: string;
+  };
+}
+export interface IHideMessageAction {
+  type: typeof HIDE_MESSAGE;
+}
+export type MessageActionTypes = ISetMessageAction | IHideMessageAction;
