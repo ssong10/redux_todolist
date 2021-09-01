@@ -34,7 +34,7 @@ class Server {
     return delayAPI(
       {
         msg: '생성완료',
-        content: newTodo.content,
+        todo: newTodo,
       },
       100
     );
@@ -53,7 +53,7 @@ class Server {
       return delayAPI(
         {
           msg: `id-${id}, 변경완료`,
-          ...newState,
+          todo: this.todos.find(todo => todo.id === id),
         },
         100
       );
