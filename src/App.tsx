@@ -1,7 +1,11 @@
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import TodoContainer from 'components/TodoContainer';
 const App: React.FC = () => {
-  return <div className="App">todoList</div>;
+  return (
+    <div className="App">
+      <TodoContainer />
+    </div>
+  );
 };
 
 export default App;
