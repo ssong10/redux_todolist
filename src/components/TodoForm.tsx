@@ -6,7 +6,11 @@ const TodoForm: React.FC = () => {
   const [content, handlerChange, handlerSubmit] = useForm('');
   return (
     <Form onSubmit={handlerSubmit}>
-      <Input onChange={handlerChange} value={content} />
+      <Input
+        onChange={handlerChange}
+        value={content}
+        placeholder="할일을 입력해주세요"
+      />
     </Form>
   );
 };
