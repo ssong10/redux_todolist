@@ -7,15 +7,20 @@ interface TodoProps {
 const Todo: React.FC<TodoProps> = ({ todo }) => {
   return (
     <TodoContainer>
-      {todo.id}
+      <CheckButton type="checkbox" checked={todo.isCheck}></CheckButton>
       {todo.content}
-      {todo.isCheck}
     </TodoContainer>
   );
 };
 
+const CheckButton = styled.input`
+  margin-right: 8px;
+`;
 const TodoContainer = styled.div`
   border: 1px solid black;
+  border-radius: 3px;
+  margin: 8px 0px;
+  padding: 16px;
 `;
 
 export default Todo;
