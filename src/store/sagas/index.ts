@@ -28,6 +28,7 @@ import {
   UPDATE_CONTENT_TODO,
   IUpdateContentAction,
 } from 'store/actions/types';
+import { saveTodo } from 'store/actions/todo';
 
 export function* fetchTodo() {
   const res: ReturnAPITodoList = yield call(TodoAPI.fetchTodos);
@@ -35,7 +36,9 @@ export function* fetchTodo() {
     type: FETCH_TODO_SUCCESS,
     payload: res,
   });
+  yield put(saveTodo());
 }
+
 export function* addTodo(action: IAddAction) {
   const newTodo = {
     id: uuid(),
@@ -43,19 +46,16 @@ export function* addTodo(action: IAddAction) {
     isCheck: false,
   };
   const res: ReturnAPITodo = yield call(() => TodoAPI.createdTodo(newTodo));
-  yield put(setMessage(`${res.todo?.content} - 생성 완료`));
   yield put({
     type: ADD_TODO_SUCCESS,
     payload: res.todo,
   });
+  yield put(setMessage(`${res.todo?.content} - 생성 완료`));
 }
 
 export function* checkUpdate(action: IUpdateCheckAction) {
   const { id, isCheck } = action.payload;
   const res: ReturnAPITodo = yield call(() => TodoAPI.checkTodo(id, isCheck));
-  yield put(
-    setMessage(`${res.todo?.content} - ${isCheck ? '완료' : '완료 못함'}`)
-  );
   yield put({
     type: UPDATE_TODO_SUCCESS,
     payload: {
@@ -63,12 +63,14 @@ export function* checkUpdate(action: IUpdateCheckAction) {
       update: { isCheck: isCheck },
     },
   });
+  yield put(
+    setMessage(`${res.todo?.content} - ${isCheck ? '완료' : '완료 못함'}`)
+  );
 }
 
 export function* contentUpdate(action: IUpdateContentAction) {
   const { id, content } = action.payload;
   const res: ReturnAPITodo = yield call(() => TodoAPI.modifyTodo(id, content));
-  yield put(setMessage(`'${res.todo?.content}' (으)로 변경`));
   yield put({
     type: UPDATE_TODO_SUCCESS,
     payload: {
@@ -76,17 +78,18 @@ export function* contentUpdate(action: IUpdateContentAction) {
       update: { content: content },
     },
   });
+  yield put(setMessage(`'${res.todo?.content}' (으)로 변경`));
 }
 export function* deleteTodo(action: IDeleteSuccessAction) {
   const { id } = action.payload;
   const res: ReturnAPITodo = yield call(() => TodoAPI.deleteTodo(id));
-  yield put(setMessage(`${res.todo?.content} - 제거 완료`));
   yield put({
     type: DELETE_TODO_SUCESS,
     payload: {
       id: id,
     },
   });
+  yield put(setMessage(`${res.todo?.content} - 제거 완료`));
 }
 export function* todos() {
   yield takeLatest(FETCH_TODO, fetchTodo);
@@ -97,6 +100,7 @@ export function* todos() {
 }
 
 export function* showMessage() {
+  yield put(saveTodo());
   yield delay(5000);
   yield put({
     type: HIDE_MESSAGE,

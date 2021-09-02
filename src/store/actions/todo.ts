@@ -4,6 +4,7 @@ import {
   UPDATE_CHECK_TODO,
   DELETE_TODO,
   UPDATE_CONTENT_TODO,
+  SAVE_TODO,
 } from './types';
 import { TodoActionTypes } from './types';
 export const fetchTodo = (): TodoActionTypes => {
@@ -43,5 +44,11 @@ export const deleteTodo = (id: string): TodoActionTypes => {
     payload: {
       id,
     },
+  };
+};
+
+export const saveTodo = (): TodoActionTypes => {
+  return {
+    type: SAVE_TODO,
   };
 };
