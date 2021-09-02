@@ -1,4 +1,4 @@
-import { Itodo } from 'types';
+import { IMessage, Itodo } from 'types';
 
 // type constant
 // todo
@@ -11,6 +11,7 @@ export const UPDATE_CONTENT_TODO = 'update_content_todo';
 export const UPDATE_TODO_SUCCESS = 'update_todo_success';
 export const DELETE_TODO = 'delete_todo';
 export const DELETE_TODO_SUCESS = 'delete_todo_success';
+export const SAVE_TODO = 'save_todo';
 // message
 export const SET_MESSAGE = 'set_message';
 export const HIDE_MESSAGE = 'hide_message';
@@ -68,7 +69,9 @@ export interface IDeleteSuccessAction {
     id: string;
   };
 }
-
+export interface ISavaTodoAction {
+  type: typeof SAVE_TODO;
+}
 // All ActionTypes
 export type TodoActionTypes =
   | IFetchAction
@@ -76,16 +79,16 @@ export type TodoActionTypes =
   | IAddAction
   | IAddSuccessAction
   | IUpdateCheckAction
+  | IUpdateContentAction
   | IUpdateAction
   | IDeleteAction
-  | IDeleteSuccessAction;
+  | IDeleteSuccessAction
+  | ISavaTodoAction;
 
 // Message Action interface
 export interface ISetMessageAction {
   type: typeof SET_MESSAGE;
-  payload: {
-    text: string;
-  };
+  payload: IMessage;
 }
 export interface IHideMessageAction {
   type: typeof HIDE_MESSAGE;

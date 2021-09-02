@@ -8,7 +8,12 @@ export interface TodoState {
   todoList: Itodo[];
 }
 
-export interface Message {
+export interface IMessage {
   text: string;
-  isShow: boolean;
+  id: string;
+}
+export interface Message {
+  messages: IMessage[];
+  count: number;
+  raise: boolean;
 }

@@ -1,6 +1,8 @@
 import data from '../constant/data.json';
 import { Itodo } from 'types';
 import { ReturnAPITodo, ReturnAPITodoList } from './type';
+import { getStorage } from 'utils/storage';
+
 interface ChangeTodo {
   content?: string;
   isCheck?: boolean;
@@ -17,7 +19,7 @@ class Server {
   todos: Itodo[];
   constructor() {
     this.baseUrl = 'http://dummy-server.io/';
-    this.todos = data as Itodo[];
+    this.todos = getStorage('paywork-todo') || [];
   }
   getTodo() {
     return delayAPI(

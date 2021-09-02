@@ -1,4 +1,10 @@
-import { FETCH_TODO, ADD_TODO, UPDATE_CHECK_TODO, DELETE_TODO } from './types';
+import {
+  FETCH_TODO,
+  ADD_TODO,
+  UPDATE_CHECK_TODO,
+  DELETE_TODO,
+  UPDATE_CONTENT_TODO,
+} from './types';
 import { TodoActionTypes } from './types';
 export const fetchTodo = (): TodoActionTypes => {
   return {
@@ -22,7 +28,15 @@ export const updateCheckTodo = (
     payload: { id, isCheck },
   };
 };
-
+export const updateContentTodo = (
+  id: string,
+  content: string
+): TodoActionTypes => {
+  return {
+    type: UPDATE_CONTENT_TODO,
+    payload: { id, content },
+  };
+};
 export const deleteTodo = (id: string): TodoActionTypes => {
   return {
     type: DELETE_TODO,
