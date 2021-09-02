@@ -30,6 +30,7 @@ import {
 } from 'store/actions/types';
 import { saveTodo } from 'store/actions/todo';
 
+// FETCH_TODO -> FETCH_TODO_SUCCESS 비동기처리
 export function* fetchTodo() {
   const res: ReturnAPITodoList = yield call(TodoAPI.fetchTodos);
   yield put({
@@ -39,6 +40,7 @@ export function* fetchTodo() {
   yield put(saveTodo());
 }
 
+// ADD_TODO -> ADD_TODO_SUCCESS 비동기처리
 export function* addTodo(action: IAddAction) {
   const newTodo = {
     id: uuid(),
@@ -53,6 +55,7 @@ export function* addTodo(action: IAddAction) {
   yield put(setMessage(`${res.todo?.content} - 생성 완료`));
 }
 
+// UPDATE_CHECK_TODO -> UPDATE_TODO_SUCCESS 비동기처리
 export function* checkUpdate(action: IUpdateCheckAction) {
   const { id, isCheck } = action.payload;
   const res: ReturnAPITodo = yield call(() => TodoAPI.checkTodo(id, isCheck));
@@ -68,6 +71,7 @@ export function* checkUpdate(action: IUpdateCheckAction) {
   );
 }
 
+// UPDATE_CONTENT_TODO -> UPDATE_TODO_SUCCESS 비동기처리
 export function* contentUpdate(action: IUpdateContentAction) {
   const { id, content } = action.payload;
   const res: ReturnAPITodo = yield call(() => TodoAPI.modifyTodo(id, content));
@@ -80,6 +84,8 @@ export function* contentUpdate(action: IUpdateContentAction) {
   });
   yield put(setMessage(`'${res.todo?.content}' (으)로 변경`));
 }
+
+// DELETE_TODO -> DELETE_TODO_SUCCESS 비동기처리
 export function* deleteTodo(action: IDeleteSuccessAction) {
   const { id } = action.payload;
   const res: ReturnAPITodo = yield call(() => TodoAPI.deleteTodo(id));
@@ -91,6 +97,8 @@ export function* deleteTodo(action: IDeleteSuccessAction) {
   });
   yield put(setMessage(`${res.todo?.content} - 제거 완료`));
 }
+
+// todo에 관한 saga 로직 담아두기
 export function* todos() {
   yield takeLatest(FETCH_TODO, fetchTodo);
   yield takeLatest(ADD_TODO, addTodo);
@@ -99,6 +107,7 @@ export function* todos() {
   yield takeLatest(DELETE_TODO, deleteTodo);
 }
 
+// message 에 대한 비동기 로직 -> 저장 후 5초후 message 숨김
 export function* showMessage() {
   yield put(saveTodo());
   yield delay(5000);
@@ -106,6 +115,8 @@ export function* showMessage() {
     type: HIDE_MESSAGE,
   });
 }
+
+// message 에 관한 saga로직 담아두기
 export function* message() {
   yield takeEvery(SET_MESSAGE, showMessage);
 }

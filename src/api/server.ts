@@ -6,6 +6,8 @@ interface ChangeTodo {
   content?: string;
   isCheck?: boolean;
 }
+
+// delay 시간 뒤에 data 를 비동기적으로 리턴
 const delayAPI = (data: ReturnAPITodo | ReturnAPITodoList, delay: number) =>
   new Promise<typeof data>(resolve => {
     setTimeout(() => {
@@ -20,14 +22,13 @@ class Server {
     this.baseUrl = 'http://dummy-server.io/';
     this.todos = getStorage('paywork-todo') || [];
   }
-  getTodo() {
-    return delayAPI(
-      {
-        count: this.todos.length,
-        todoList: this.todos,
-      },
-      500
-    );
+  // url 분해
+  composition(url: string) {
+    const baseUrlStart = url.indexOf(this.baseUrl);
+    if (baseUrlStart === 0) {
+      return url.slice(this.baseUrl.length).split('/');
+    }
+    throw new Error('error');
   }
 
   createTodo(newTodo: Itodo) {
@@ -40,8 +41,11 @@ class Server {
       100
     );
   }
+
+  // newState 값이 비었으면 삭제, 있으면 변경
   modifyTodo(id: Itodo['id'], newState: ChangeTodo) {
     if (Object.keys(newState).length) {
+      // 변경작업
       this.todos = this.todos.map(todo => {
         if (todo.id === id) {
           return {
@@ -59,6 +63,7 @@ class Server {
         100
       );
     } else {
+      // 삭제
       const deleted = this.todos.find(todo => todo.id === id);
       this.todos = this.todos.filter(todo => todo.id !== id);
       return delayAPI(
@@ -71,21 +76,21 @@ class Server {
     }
   }
 
-  composition(url: string) {
-    const baseUrlStart = url.indexOf(this.baseUrl);
-    if (baseUrlStart === 0) {
-      return url.slice(this.baseUrl.length).split('/');
-    }
-    throw new Error('error');
-  }
-
+  // GET방식 -> 전체 todoList, count
   GET(url: string) {
     const [todo, id] = this.composition(url);
     if (todo === 'todo' && !id) {
-      return this.getTodo();
+      return delayAPI(
+        {
+          count: this.todos.length,
+          todoList: this.todos,
+        },
+        500
+      );
     }
   }
 
+  // POST 방식 -> id 있으면 변경, 아니면 생성
   POST(url: string, request: Partial<Itodo>) {
     const [todo, id] = this.composition(url);
     if (todo === 'todo') {

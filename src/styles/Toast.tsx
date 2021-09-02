@@ -22,5 +22,5 @@ export const MoveDown = (count: number): FlattenSimpleInterpolation => css`
   animation: ${fadeIn(count)} 0.5s linear;
 `;
 export const FadeOut = css`
-  animation: ${fadeOut} 1.5s linear 3.3s forwards;
+  animation: ${fadeOut} 2s ease-in 2.8s forwards;
 `;
