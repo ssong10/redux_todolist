@@ -1,4 +1,3 @@
-import data from '../constant/data.json';
 import { Itodo } from 'types';
 import { ReturnAPITodo, ReturnAPITodoList } from './type';
 import { getStorage } from 'utils/storage';

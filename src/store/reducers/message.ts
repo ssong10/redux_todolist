@@ -4,7 +4,6 @@ import {
   MessageActionTypes,
 } from 'store/actions/types';
 import { Message } from 'types';
-import uuid from 'utils/uuid';
 
 const INITIAL_STATE: Message = {
   messages: [],

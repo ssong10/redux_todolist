@@ -1,4 +1,4 @@
-import { keyframes, css } from 'styled-components';
+import { keyframes, css, FlattenSimpleInterpolation } from 'styled-components';
 
 const fadeIn = (count: number) => keyframes`
   from {
@@ -18,7 +18,7 @@ const fadeOut = keyframes`
   }
 `;
 
-export const MoveDown = (count: number) => css`
+export const MoveDown = (count: number): FlattenSimpleInterpolation => css`
   animation: ${fadeIn(count)} 0.5s linear;
 `;
 export const FadeOut = css`
